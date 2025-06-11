@@ -52,7 +52,7 @@ function AdminSidebar() {
             <Shield className="h-4 w-4" />
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-semibold">Admin Dashboard</span>
+            <span className="truncate font-semibold">Projeto Boscov</span>
             <span className="truncate text-xs text-muted-foreground">Painel Administrativo</span>
           </div>
         </div>

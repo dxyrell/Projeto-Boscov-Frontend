@@ -115,17 +115,28 @@ export default function AdminPage() {
     }
   }
 
-  const handleUpdateMovie = async () => {
-    if (!editingMovie) return
-    try {
-      await api.updateMovie(editingMovie.id, editingMovie)
-      toast({ title: "Filme atualizado com sucesso!" })
-      setEditingMovie(null)
-      loadData()
-    } catch (error) {
-      toast({ title: "Erro ao atualizar filme", variant: "destructive" })
-    }
+const handleUpdateMovie = async () => {
+  if (!editingMovie) return
+  try {
+    await api.updateMovie(editingMovie.id, {
+      nome: editingMovie.nome || "",
+      diretor: editingMovie.diretor || "",
+      anoLancamento: editingMovie.anoLancamento || 0,
+      duracao: editingMovie.duracao || 0,
+      produtora: editingMovie.produtora || "",
+      classificacao: editingMovie.classificacao || "",
+      poster: editingMovie.poster || "",
+      generos: editingMovie.generos || [],
+    })
+    toast({ title: "Filme atualizado com sucesso!" })
+    setEditingMovie(null)
+    loadData()
+  } catch (error) {
+    toast({ title: "Erro ao atualizar filme", variant: "destructive" })
   }
+}
+
+
 
   const handleDeleteMovie = async (id: number) => {
     try {
@@ -520,36 +531,73 @@ export default function AdminPage() {
                         <DialogTitle>Editar Filme</DialogTitle>
                       </DialogHeader>
                       {editingMovie && (
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label>Nome</Label>
-                            <Input
-                              value={editingMovie.nome}
-                              onChange={(e) => setEditingMovie({ ...editingMovie, nome: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Diretor</Label>
-                            <Input
-                              value={editingMovie.diretor}
-                              onChange={(e) => setEditingMovie({ ...editingMovie, diretor: e.target.value })}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Ano</Label>
-                            <Input
-                              type="number"
-                              value={editingMovie.anoLancamento}
-                              onChange={(e) =>
-                                setEditingMovie({ ...editingMovie, anoLancamento: Number.parseInt(e.target.value) })
-                              }
-                            />
-                          </div>
-                          <Button onClick={handleUpdateMovie} className="w-full">
-                            Salvar Alterações
-                          </Button>
-                        </div>
+                      <div className="space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-2">
+        <Label>Título do Filme</Label>
+        <Input
+          value={editingMovie.nome}
+          onChange={(e) => setEditingMovie({ ...editingMovie, nome: e.target.value })}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label>Diretor</Label>
+        <Input
+          value={editingMovie.diretor}
+          onChange={(e) => setEditingMovie({ ...editingMovie, diretor: e.target.value })}
+        />
+      </div>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="space-y-2">
+        <Label>Ano de Lançamento</Label>
+        <Input
+          type="number"
+          value={editingMovie.anoLancamento}
+          onChange={(e) =>
+            setEditingMovie({ ...editingMovie, anoLancamento: Number.parseInt(e.target.value) })
+          }
+        />
+      </div>
+      <div className="space-y-2">
+        <Label>Duração (minutos)</Label>
+        <Input
+          type="number"
+          value={editingMovie.duracao}
+          onChange={(e) =>
+            setEditingMovie({ ...editingMovie, duracao: Number.parseInt(e.target.value) })
+          }
+        />
+      </div>
+      <div className="space-y-2">
+        <Label>Classificação</Label>
+        <Input
+          value={editingMovie.classificacao}
+          onChange={(e) => setEditingMovie({ ...editingMovie, classificacao: e.target.value })}
+        />
+      </div>
+    </div>
+    <div className="space-y-2">
+      <Label>Produtora</Label>
+      <Input
+        value={editingMovie.produtora}
+        onChange={(e) => setEditingMovie({ ...editingMovie, produtora: e.target.value })}
+      />
+    </div>
+    <div className="space-y-2">
+      <Label>URL do Poster</Label>
+      <Input
+        value={editingMovie.poster}
+        onChange={(e) => setEditingMovie({ ...editingMovie, poster: e.target.value })}
+      />
+    </div>
+
+    <Button onClick={handleUpdateMovie} className="w-full">
+      Salvar Alterações
+    </Button>
+                      </div>
                       )}
+
                     </DialogContent>
                   </Dialog>
                   <Button variant="outline" size="sm" onClick={() => handleDeleteMovie(movie.id)}>
